@@ -1,0 +1,152 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:shopeease/database.dart';
+import 'package:shopeease/screens/addProduct.dart';
+import 'package:shopeease/screens/auth/login.dart';
+import 'package:shopeease/utils/Utils.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final auth = FirebaseAuth.instance;
+  var user;
+  String name = "";
+  String email = "";
+  String avatar = "";
+
+  void getInfo() async {
+    user =
+        await DatabaseMethods().getUserInfo(auth.currentUser!.uid.toString());
+    setState(() {
+      name = user["Name"];
+      email = user["Email"];
+      avatar = user["Avatar"];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Account"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                try {
+                  auth.signOut().then((value) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login())));
+                } catch (e) {
+                  Utils().showToastMessage(e.toString(), false);
+                }
+              },
+              icon: Icon(Icons.logout_rounded)),
+          SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+      body: Column(children: [
+        CircleAvatar(
+          radius: 70.0,
+          backgroundImage: NetworkImage(avatar),
+        ),
+        ProfileCard(
+          value: name,
+          title: "Name",
+          icon: Icon(
+            Icons.person,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        ProfileCard(
+          value: email,
+          title: "Email",
+          icon: Icon(
+            Icons.email,
+            color: Colors.black,
+          ),
+        ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddProduct()));
+        },
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
+class ProfileCard extends StatelessWidget {
+  const ProfileCard(
+      {super.key,
+      required this.value,
+      required this.title,
+      required this.icon});
+
+  final String value;
+  final String title;
+  final Icon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(10),
+        elevation: 2.0,
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 15.0,
+            horizontal: 10.0,
+          ),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Row(
+            children: [
+              icon,
+              SizedBox(
+                width: 20.0,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "$title",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    value,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
