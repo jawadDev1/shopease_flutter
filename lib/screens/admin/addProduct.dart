@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shopeease/database.dart';
 import 'package:shopeease/utils/Utils.dart';
+import 'package:shopeease/utils/theme.dart';
 import 'package:shopeease/widget/RoundButton.dart';
 
 class AddProduct extends StatefulWidget {
@@ -51,6 +52,9 @@ class _AddProductState extends State<AddProduct> {
     });
     if (image == null) {
       Utils().showToastMessage("Upload a product Image", false);
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
 
@@ -100,9 +104,10 @@ class _AddProductState extends State<AddProduct> {
         title: Text("Add Product"),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 3, 5, 71),
+        backgroundColor: AppTheme.primary,
         iconTheme: IconThemeData(color: Colors.white, size: 26.0),
       ),
+      backgroundColor: AppTheme.background,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -117,10 +122,15 @@ class _AddProductState extends State<AddProduct> {
                         children: [
                           TextFormField(
                             keyboardType: TextInputType.text,
+                            style: TextStyle(color: AppTheme.white),
                             controller: titleController,
                             decoration: InputDecoration(
                                 hintText: "Enter title",
-                                prefixIcon: Icon(Icons.text_fields_rounded)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(
+                                  Icons.text_fields_rounded,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter title";
@@ -133,10 +143,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(color: AppTheme.white),
                             controller: descriptionController,
                             decoration: InputDecoration(
                                 hintText: "Enter Description",
-                                prefixIcon: Icon(Icons.description)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(
+                                  Icons.description,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter Description";
@@ -149,10 +164,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
+                            style: TextStyle(color: AppTheme.white),
                             controller: priceController,
                             decoration: InputDecoration(
                                 hintText: "Enter Price",
-                                prefixIcon: Icon(Icons.attach_money)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(
+                                  Icons.attach_money,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter price";
@@ -165,10 +185,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
+                            style: TextStyle(color: AppTheme.white),
                             controller: categoryController,
                             decoration: InputDecoration(
                                 hintText: "Enter Category",
-                                prefixIcon: Icon(Icons.category)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(
+                                  Icons.category,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter price";
@@ -181,11 +206,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
+                            style: TextStyle(color: AppTheme.white),
                             controller: stockController,
                             decoration: InputDecoration(
                                 hintText: "Enter Stock",
+                                hintStyle: TextStyle(color: AppTheme.white),
                                 prefixIcon: Icon(
-                                    Icons.production_quantity_limits_rounded)),
+                                  Icons.production_quantity_limits_rounded,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter stock";
@@ -198,10 +227,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
+                            style: TextStyle(color: AppTheme.white),
                             controller: sizesController,
                             decoration: InputDecoration(
                               hintText: "Enter Sizes (comma separated)",
-                              prefixIcon: Icon(Icons.format_size),
+                              hintStyle: TextStyle(color: AppTheme.white),
+                              prefixIcon: Icon(
+                                Icons.format_size,
+                                color: AppTheme.white,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -209,10 +243,15 @@ class _AddProductState extends State<AddProduct> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.text,
+                            style: TextStyle(color: AppTheme.white),
                             controller: colorsController,
                             decoration: InputDecoration(
                               hintText: "Enter Colors (comma separated)",
-                              prefixIcon: Icon(Icons.color_lens),
+                              hintStyle: TextStyle(color: AppTheme.white),
+                              prefixIcon: Icon(
+                                Icons.color_lens,
+                                color: AppTheme.white,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -228,13 +267,19 @@ class _AddProductState extends State<AddProduct> {
                                   ? Image.file(image!.absolute)
                                   : Row(
                                       children: [
-                                        Icon(Icons.image),
+                                        Icon(
+                                          Icons.image,
+                                          color: AppTheme.white,
+                                        ),
                                         SizedBox(
                                           width: 14,
                                         ),
                                         Text(
                                           "Upload image",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: AppTheme.white,
+                                          ),
                                         )
                                       ],
                                     ),
@@ -247,7 +292,7 @@ class _AddProductState extends State<AddProduct> {
                   ),
                   RoundButton(
                       title: "Add",
-                      color: Colors.black,
+                      color: AppTheme.primary,
                       isLoading: isLoading,
                       onTap: () {
                         addNewProduct();

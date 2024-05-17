@@ -2,7 +2,6 @@ import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:shopeease/widget/expandedWidget.dart';
 import 'package:shopeease/widget/previewWidget.dart';
-import 'package:shopeease/widget/widget_support.dart';
 
 class Details extends StatefulWidget {
   const Details({
@@ -14,15 +13,18 @@ class Details extends StatefulWidget {
     required this.stock,
     required this.sizes,
     required this.colors,
+    required this.productId,
   });
 
   final String title;
   final String image;
   final String descirption;
-  final String price;
+  final int price;
   final String stock;
   final String sizes;
   final String colors;
+  final String? productId;
+
   @override
   State<Details> createState() => _DetailsState();
 }
@@ -34,9 +36,10 @@ class _DetailsState extends State<Details> {
   String? title;
   String? image;
   String? descirption;
-  String? price;
+  int? price;
   String? stock;
   String? sizes;
+  String? productId;
   String? colors;
 
   @override
@@ -48,6 +51,7 @@ class _DetailsState extends State<Details> {
     price = widget.price;
     stock = widget.stock;
     sizes = widget.sizes;
+    productId = widget.productId;
     colors = widget.colors;
   }
 
@@ -56,21 +60,11 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       // Bottom Sheet
       body: DraggableBottomSheet(
-          minExtent: 150,
+          minExtent: 240,
           useSafeArea: false,
           curve: Curves.easeIn,
           maxExtent: ScreenSize.size.height * 0.8,
           previewWidget: PreviewWidget(
-            ProductCount: productCount,
-            title: title,
-            price: price,
-            stock: int.parse(stock!),
-          ),
-          backgroundWidget: _backgroundWidget(
-            ScreenSize: ScreenSize,
-            image: image,
-          ),
-          expandedWidget: ExpandedWidget(
             ProductCount: productCount,
             size: size,
             title: title,
@@ -79,7 +73,26 @@ class _DetailsState extends State<Details> {
             productSizes: sizes,
             productColors: colors,
             color: color,
+            image: image,
+            price: price,
+            productId: productId,
           ),
+          backgroundWidget: _backgroundWidget(
+            ScreenSize: ScreenSize,
+            image: image,
+          ),
+          expandedWidget: ExpandedWidget(
+              ProductCount: productCount,
+              size: size,
+              title: title,
+              stock: int.parse(stock!),
+              description: descirption,
+              productSizes: sizes,
+              productColors: colors,
+              color: color,
+              image: image,
+              price: price,
+              productId: productId),
           onDragging: (pos) {}),
     );
   }
@@ -114,6 +127,7 @@ class _backgroundWidget extends StatelessWidget {
               Navigator.pop(context);
             },
             child: Container(
+              margin: EdgeInsets.only(top: 12.0),
               padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 8.0),
               decoration: BoxDecoration(
                   border: Border.all(width: 1.7, color: Colors.white),

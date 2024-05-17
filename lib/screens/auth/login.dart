@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:random_string/random_string.dart';
-import 'package:shopeease/database.dart';
 import 'package:shopeease/screens/bottomnav.dart';
 import 'package:shopeease/screens/auth/signup.dart';
-import 'package:shopeease/testCode.dart';
+
 import 'package:shopeease/utils/Utils.dart';
+import 'package:shopeease/utils/theme.dart';
 import 'package:shopeease/widget/RoundButton.dart';
 // import 'package:bmi_app/services/database.dart';
 
@@ -56,6 +54,7 @@ class _LoginState extends State<Login> {
   @override
   // release from the memory
   void dispose() {
+    super.dispose();
     emailController.dispose();
     passwordController.dispose();
   }
@@ -66,8 +65,10 @@ class _LoginState extends State<Login> {
         title: Text("Login"),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 3, 5, 71),
+        backgroundColor: AppTheme.primary,
+        iconTheme: IconThemeData(color: Colors.white, size: 26.0),
       ),
+      backgroundColor: AppTheme.background,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         child: Column(
@@ -81,9 +82,12 @@ class _LoginState extends State<Login> {
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         controller: emailController,
+                        style: TextStyle(color: AppTheme.white),
                         decoration: InputDecoration(
                             hintText: "Enter Email",
-                            prefixIcon: Icon(Icons.email)),
+                            hintStyle: TextStyle(color: AppTheme.white),
+                            prefixIcon:
+                                Icon(Icons.email, color: AppTheme.white)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "enter email";
@@ -99,10 +103,13 @@ class _LoginState extends State<Login> {
                       TextFormField(
                         keyboardType: TextInputType.text,
                         controller: passwordController,
+                        style: TextStyle(color: AppTheme.white),
                         obscureText: true,
                         decoration: InputDecoration(
                             hintText: "Enter Password",
-                            prefixIcon: Icon(Icons.lock_outline_rounded)),
+                            hintStyle: TextStyle(color: AppTheme.white),
+                            prefixIcon: Icon(Icons.lock_outline_rounded,
+                                color: AppTheme.white)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "enter password";
@@ -118,7 +125,7 @@ class _LoginState extends State<Login> {
                       ),
                       RoundButton(
                           title: "Login",
-                          color: Colors.black,
+                          color: AppTheme.primary,
                           isLoading: isLoading,
                           onTap: () {
                             if (formKey.currentState!.validate()) {

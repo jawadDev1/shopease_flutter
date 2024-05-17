@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopeease/screens/bottomnav.dart';
 import 'package:shopeease/screens/auth/login.dart';
-import 'package:shopeease/testCode.dart';
+import 'package:shopeease/utils/theme.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -40,20 +40,21 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 16, 16, 28),
+        backgroundColor: AppTheme.primary,
         body: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('images/logo.png'),
-                  radius: 60,
+                Icon(
+                  Icons.shopping_cart_outlined,
+                  size: 62,
+                  color: AppTheme.white,
                 ),
                 Text(
-                  "Unlock Knowledge, Quiz Your Way!",
+                  "ShopEase",
                   style: TextStyle(
-                      fontSize: 20, color: Colors.white, fontFamily: 'Roboto'),
+                      fontSize: 30, color: Colors.white, fontFamily: 'Roboto'),
                 ),
                 SizedBox(
                   height: 34,

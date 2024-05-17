@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopeease/database.dart';
-import 'package:shopeease/screens/addProduct.dart';
+
+import 'package:shopeease/screens/admin/dashboard.dart';
 import 'package:shopeease/screens/auth/login.dart';
 import 'package:shopeease/utils/Utils.dart';
+import 'package:shopeease/utils/theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -38,7 +40,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Account"),
+        title: Text(
+          "Account",
+          style: TextStyle(color: AppTheme.white),
+        ),
+        backgroundColor: AppTheme.primary,
         actions: [
           IconButton(
               onPressed: () {
@@ -50,23 +56,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Utils().showToastMessage(e.toString(), false);
                 }
               },
-              icon: Icon(Icons.logout_rounded)),
+              icon: Icon(
+                Icons.logout_rounded,
+                color: AppTheme.white,
+              )),
           SizedBox(
             width: 10,
           ),
         ],
       ),
+      backgroundColor: AppTheme.background,
       body: Column(children: [
+        SizedBox(
+          height: 30,
+        ),
         CircleAvatar(
           radius: 70.0,
           backgroundImage: NetworkImage(avatar),
+        ),
+        SizedBox(
+          height: 30,
         ),
         ProfileCard(
           value: name,
           title: "Name",
           icon: Icon(
             Icons.person,
-            color: Colors.black,
+            color: AppTheme.white,
           ),
         ),
         SizedBox(
@@ -77,17 +93,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: "Email",
           icon: Icon(
             Icons.email,
-            color: Colors.black,
+            color: AppTheme.white,
           ),
         ),
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddProduct()));
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: user['isAdmin']
+          ? FloatingActionButton(
+              backgroundColor: AppTheme.primary,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Dashboard()));
+              },
+              child: Icon(
+                Icons.add,
+                color: AppTheme.white,
+              ),
+            )
+          : Text(""),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
@@ -117,7 +139,7 @@ class ProfileCard extends StatelessWidget {
             horizontal: 10.0,
           ),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              color: AppTheme.card, borderRadius: BorderRadius.circular(10)),
           child: Row(
             children: [
               icon,
@@ -130,14 +152,14 @@ class ProfileCard extends StatelessWidget {
                   Text(
                     "$title",
                     style: TextStyle(
-                        color: Colors.black,
+                        color: AppTheme.white,
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
                     value,
                     style: TextStyle(
-                        color: Colors.black,
+                        color: AppTheme.white,
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600),
                   )

@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shopeease/database.dart';
 import 'package:shopeease/screens/bottomnav.dart';
 import 'package:shopeease/screens/auth/login.dart';
-import 'package:shopeease/testCode.dart';
+
 import 'package:shopeease/utils/Utils.dart';
+import 'package:shopeease/utils/theme.dart';
 import 'package:shopeease/widget/RoundButton.dart';
 // import 'package:bmi_app/services/database.dart';
 
@@ -107,6 +108,7 @@ class _SignupState extends State<Signup> {
   @override
   // release from the memory
   void dispose() {
+    super.dispose();
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -118,8 +120,10 @@ class _SignupState extends State<Signup> {
         title: Text("Signup"),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 3, 5, 71),
+        backgroundColor: AppTheme.primary,
+        iconTheme: IconThemeData(color: Colors.white, size: 26.0),
       ),
+      backgroundColor: AppTheme.background,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -135,9 +139,12 @@ class _SignupState extends State<Signup> {
                           TextFormField(
                             keyboardType: TextInputType.text,
                             controller: nameController,
+                            style: TextStyle(color: AppTheme.white),
                             decoration: InputDecoration(
                                 hintText: "Enter name",
-                                prefixIcon: Icon(Icons.person)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon:
+                                    Icon(Icons.person, color: AppTheme.white)),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter name";
@@ -151,9 +158,14 @@ class _SignupState extends State<Signup> {
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: emailController,
+                            style: TextStyle(color: AppTheme.white),
                             decoration: InputDecoration(
                                 hintText: "Enter Email",
-                                prefixIcon: Icon(Icons.email)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(
+                                  Icons.email,
+                                  color: AppTheme.white,
+                                )),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter email";
@@ -170,9 +182,12 @@ class _SignupState extends State<Signup> {
                             keyboardType: TextInputType.text,
                             controller: passwordController,
                             obscureText: true,
+                            style: TextStyle(color: AppTheme.white),
                             decoration: InputDecoration(
                                 hintText: "Enter Password",
-                                prefixIcon: Icon(Icons.lock_outline_rounded)),
+                                hintStyle: TextStyle(color: AppTheme.white),
+                                prefixIcon: Icon(Icons.lock_outline_rounded,
+                                    color: AppTheme.white)),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return "enter password";
@@ -193,13 +208,16 @@ class _SignupState extends State<Signup> {
                                   ? Image.file(image!.absolute)
                                   : Row(
                                       children: [
-                                        Icon(Icons.image),
+                                        Icon(Icons.image,
+                                            color: AppTheme.white),
                                         SizedBox(
                                           width: 14,
                                         ),
                                         Text(
                                           "Upload image",
-                                          style: TextStyle(fontSize: 15),
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: AppTheme.white),
                                         )
                                       ],
                                     ),
@@ -212,7 +230,7 @@ class _SignupState extends State<Signup> {
                   ),
                   RoundButton(
                       title: "Signup",
-                      color: Colors.black,
+                      color: AppTheme.primary,
                       isLoading: isLoading,
                       onTap: () {
                         signup();

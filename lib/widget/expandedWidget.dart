@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:shopeease/controllers/cart_controller.dart';
+
+import 'package:shopeease/utils/Utils.dart';
+import 'package:shopeease/utils/theme.dart';
 import 'package:shopeease/widget/reviewCard.dart';
 import 'package:shopeease/widget/stars.dart';
-import 'package:shopeease/widget/widget_support.dart';
 
 class ExpandedWidget extends StatefulWidget {
   ExpandedWidget({
@@ -14,6 +20,9 @@ class ExpandedWidget extends StatefulWidget {
     required this.productSizes,
     required this.color,
     required this.productColors,
+    required this.image,
+    required this.price,
+    required this.productId,
   });
 
   final int? ProductCount;
@@ -21,22 +30,49 @@ class ExpandedWidget extends StatefulWidget {
   final String? color;
   final String? title;
   final String? description;
-  final num? stock;
+  final int stock;
   final String? productSizes;
   final String? productColors;
+  final String? image;
+  final int? price;
+  final String? productId;
+
   @override
   State<ExpandedWidget> createState() => _ExpandedWidgetState();
 }
 
 class _ExpandedWidgetState extends State<ExpandedWidget> {
-  int? productCount;
+  num? productCount;
   String? size;
   String? title;
   String? description;
   String? color;
-  num? stock;
+  String? image;
+  int? price;
+  int? stock;
   List? productSizes;
   List? productColors;
+  String? productId;
+
+  var user = FirebaseAuth.instance.currentUser;
+  final CartController cartController = Get.put(CartController());
+
+  bool isLoading = false;
+
+  void addToCart(Map<String, dynamic> product) async {
+    bool productExists =
+        cartController.cart.any((item) => item["productId"] == productId);
+
+    if (productExists) {
+      Utils().showToastMessage("product is already in cart", false);
+      return;
+    }
+
+    cartController.cart.add(product);
+    Utils().showToastMessage("product added to cart successfully", true);
+    var productPrice = price! * productCount!.toInt();
+    cartController.totalPrice += productPrice;
+  }
 
   @override
   void initState() {
@@ -46,6 +82,9 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
     description = widget.description;
     stock = widget.stock;
     color = widget.color;
+    image = widget.image;
+    price = widget.price;
+    productId = widget.productId;
 
     productSizes = widget.productSizes!.split(',');
     productColors = widget.productColors!.split(',');
@@ -59,7 +98,8 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
       width: ScreenSize.size.width * 0.90,
       padding: EdgeInsets.symmetric(vertical: 21.0, horizontal: 16.0),
       decoration: BoxDecoration(
-          color: Colors.white10, borderRadius: BorderRadius.circular(11.0)),
+          color: Color.fromARGB(70, 0, 85, 255),
+          borderRadius: BorderRadius.circular(11.0)),
       child: Column(
         children: [
           Center(
@@ -75,9 +115,28 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '$title',
-                    style: AppWidget.productTitleStyle(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '$title',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Montserrat-Bold',
+                        ),
+                      ),
+                      Text(
+                        '\$$price',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Montserrat-Bold',
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 11.0,
@@ -102,7 +161,7 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                         padding: EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 8.0),
                         decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: AppTheme.card,
                             borderRadius: BorderRadius.circular(11.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,13 +180,14 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 13),
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppTheme.primary,
                                       borderRadius: BorderRadius.circular(14)),
                                   child: Text(
                                     '-',
                                     style: TextStyle(
                                         fontSize: 25,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.white),
                                   )),
                             ),
                             SizedBox(
@@ -150,17 +210,19 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                                 });
                               },
                               child: Container(
+                                  // width: ScreenSize.size.width * .08,
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
                                       vertical: 0, horizontal: 13),
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppTheme.primary,
                                       borderRadius: BorderRadius.circular(14)),
                                   child: Text(
                                     '+',
                                     style: TextStyle(
                                         fontSize: 25,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.white),
                                   )),
                             ),
                           ],
@@ -231,10 +293,10 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                               border: Border.all(
                                   width: 1,
                                   color: this.size == size
-                                      ? Colors.black
+                                      ? AppTheme.primary
                                       : Colors.white),
                               color: this.size == size
-                                  ? Colors.black
+                                  ? AppTheme.primary
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(28),
                             ),
@@ -288,10 +350,10 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                               border: Border.all(
                                   width: 1,
                                   color: productColor == color
-                                      ? Colors.black
+                                      ? AppTheme.primary
                                       : Colors.white),
                               color: productColor == color
-                                  ? Colors.black
+                                  ? AppTheme.primary
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(28),
                             ),
@@ -336,7 +398,7 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size(ScreenSize.size.width * 0.8,
                               ScreenSize.size.height * 0.04),
-                          backgroundColor: Colors.white54),
+                          backgroundColor: AppTheme.primary),
                       onPressed: () {},
                       child: Text(
                         "view all",
@@ -362,6 +424,7 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
                   ),
                   TextField(
                     controller: commentTextController,
+                    style: TextStyle(color: AppTheme.white),
                     decoration: InputDecoration(
                         hintText: "Enter comment",
                         hintStyle: TextStyle(color: Colors.white),
@@ -378,15 +441,32 @@ class _ExpandedWidgetState extends State<ExpandedWidget> {
           // Add To Cart Button
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: AppTheme.primary,
                 minimumSize: Size(
                     ScreenSize.size.width * 0.8, ScreenSize.size.height * .06),
               ),
-              onPressed: () {},
-              child: Text(
-                "Add to cart",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ))
+              onPressed: () async {
+                Map<String, dynamic> product = {
+                  "title": title,
+                  "price": price,
+                  "quantity": productCount,
+                  "userId": user!.uid,
+                  "productId": productId,
+                  "image": image,
+                  "stock": stock
+                };
+
+                addToCart(product);
+              },
+              child: isLoading
+                  ? CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: Colors.white,
+                    )
+                  : Text(
+                      "Add to cart",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ))
         ],
       ),
     );

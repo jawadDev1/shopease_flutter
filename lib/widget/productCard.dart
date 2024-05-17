@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shopeease/screens/details.dart';
-import 'package:shopeease/widget/widget_support.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -12,15 +11,17 @@ class ProductCard extends StatelessWidget {
     required this.stock,
     required this.sizes,
     required this.colors,
+    this.productId,
   });
 
   final String productImage;
   final String title;
-  final String price;
+  final int price;
   final String description;
   final String stock;
   final String sizes;
   final String colors;
+  final String? productId;
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +32,14 @@ class ProductCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => Details(
-                      title: title,
-                      image: productImage,
-                      descirption: description,
-                      price: price,
-                      colors: colors,
-                      sizes: sizes,
-                      stock: stock,
-                    )));
+                    title: title,
+                    image: productImage,
+                    descirption: description,
+                    price: price,
+                    colors: colors,
+                    sizes: sizes,
+                    stock: stock,
+                    productId: productId)));
       },
       child: Stack(
         children: [
@@ -58,24 +59,17 @@ class ProductCard extends StatelessWidget {
             top: 1.0,
             left: 15.0,
             child: Container(
-              width: ScreenSize.size.width * 0.39,
-              padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 7.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: AppWidget.cardTextStyle(),
-                  ),
-                  Icon(
-                    Icons.favorite_outline,
+                width: ScreenSize.size.width * 0.39,
+                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 7.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat-Regular',
                     color: Colors.white,
-                    size: 21.0,
-                  )
-                ],
-              ),
-            ),
+                  ),
+                )),
           ),
           Positioned(
             bottom: 20.0,
@@ -91,8 +85,13 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "\$$price",
-                    style: AppWidget.cardTextStyle(),
+                    "\$" + price.toString(),
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat-Regular',
+                      color: Colors.white,
+                    ),
                   ),
                   Icon(
                     Icons.shopping_basket_outlined,

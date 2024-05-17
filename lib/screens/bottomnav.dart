@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:shopeease/screens/home.dart';
-import 'package:shopeease/screens/order.dart';
+import 'package:shopeease/screens/store.dart';
 import 'package:shopeease/screens/profile.dart';
-import 'package:shopeease/screens/wallet.dart';
+
+import 'package:shopeease/utils/theme.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -15,23 +16,19 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   int currentTabIndex = 0;
 
-  // late -> non-nullable variable. used when can't initalize variable immediatly. will use it before initialization
-
   late List<Widget> pages;
   late Widget currentScreen;
 
   late HomeScreen home;
-  late WalletScreen wallet;
-  late OrderScreen order;
+  late Store store;
   late ProfileScreen profile;
 
   @override
   void initState() {
     home = HomeScreen();
-    wallet = WalletScreen();
-    order = OrderScreen();
+    store = Store();
     profile = ProfileScreen();
-    pages = [home, order, wallet, profile];
+    pages = [home, store, profile];
     super.initState();
   }
 
@@ -39,8 +36,8 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         height: 65,
-        backgroundColor: Colors.white,
-        color: Colors.green,
+        backgroundColor: AppTheme.background,
+        color: AppTheme.primary,
         animationDuration: Duration(milliseconds: 300),
         onTap: (int index) {
           setState(() {
@@ -54,12 +51,7 @@ class _BottomNavState extends State<BottomNav> {
             size: 28.0,
           ),
           Icon(
-            Icons.shopping_bag_outlined,
-            color: Colors.white,
-            size: 28.0,
-          ),
-          Icon(
-            Icons.wallet_outlined,
+            Icons.store,
             color: Colors.white,
             size: 28.0,
           ),

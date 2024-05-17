@@ -28,7 +28,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.shopeease"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -68,5 +68,5 @@ flutter {
 }
 
 dependencies {
-    
+    implementation 'com.stripe:stripe-android:17.1.1'
 }
