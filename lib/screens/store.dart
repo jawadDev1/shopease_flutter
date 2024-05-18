@@ -34,7 +34,7 @@ class _StoreState extends State<Store> {
             height: 14,
           ),
           Container(
-            height: ScreenSize.size.height * 0.5,
+            height: ScreenSize.size.height * 0.7,
             child: StreamBuilder(
               stream:
                   FirebaseFirestore.instance.collection('products').snapshots(),

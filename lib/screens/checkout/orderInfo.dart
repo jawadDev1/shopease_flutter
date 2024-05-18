@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-
 import 'package:shopeease/controllers/cart_controller.dart';
-
 import 'package:shopeease/screens/checkout/checkout.dart';
 import 'package:shopeease/utils/theme.dart';
 
@@ -51,7 +49,7 @@ class _OrderInfoState extends State<OrderInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order Detailsshasss"),
+        title: Text("Order Details"),
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
         centerTitle: true,
         backgroundColor: AppTheme.primary,

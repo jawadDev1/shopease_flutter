@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopeease/database.dart';
-
 import 'package:shopeease/screens/admin/dashboard.dart';
 import 'package:shopeease/screens/auth/login.dart';
 import 'package:shopeease/utils/Utils.dart';

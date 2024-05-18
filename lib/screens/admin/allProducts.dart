@@ -123,33 +123,35 @@ class _AllProductsState extends State<AllProducts> {
                             fontSize: 13,
                             fontFamily: "Roboto-Regular"),
                       )),
-                      DataCell(Container(
-                        width: 0,
-                        child: Text(
+                      DataCell(
+                        Text(
                           "${product['stock']}",
                           style: TextStyle(
                               color: AppTheme.white,
                               fontSize: 12,
                               fontFamily: "Roboto-Regular"),
                         ),
-                      )),
-                      DataCell(SizedBox(
-                        width: 8.0,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: AppTheme.white,
+                      ),
+                      DataCell(
+                        Container(
+                          width: 8.0,
+                          child: IconButton(
+                            alignment: Alignment.centerLeft,
+                            icon: Icon(
+                              Icons.edit,
+                              color: AppTheme.white,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdateProduct(
+                                            product: product,
+                                          )));
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UpdateProduct(
-                                          product: product,
-                                        )));
-                          },
                         ),
-                      )),
+                      ),
                       DataCell(IconButton(
                         icon: Icon(
                           Icons.delete,

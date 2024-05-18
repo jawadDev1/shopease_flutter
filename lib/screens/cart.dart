@@ -188,7 +188,7 @@ class _CartCardState extends State<CartCard> {
                 children: [
                   Container(
                     clipBehavior: Clip.hardEdge,
-                    width: screenSize.size.width * 0.22,
+                    width: screenSize.size.width * 0.20,
                     height: screenSize.size.height * 0.10,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35.0),
@@ -204,13 +204,16 @@ class _CartCardState extends State<CartCard> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${widget.title}",
-                        style: TextStyle(
-                            color: AppTheme.white,
-                            fontSize: 17.0,
-                            fontFamily: "Montserrat-Regular",
-                            fontWeight: FontWeight.w800),
+                      Container(
+                        width: screenSize.size.width * .21,
+                        child: Text(
+                          "${widget.title}",
+                          style: TextStyle(
+                              color: AppTheme.white,
+                              fontSize: 17.0,
+                              fontFamily: "Montserrat-Regular",
+                              fontWeight: FontWeight.w800),
+                        ),
                       ),
                       SizedBox(
                         height: 8.0,
